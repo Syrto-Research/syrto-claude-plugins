@@ -2,9 +2,10 @@
 
 ## Where context is written
 
-Three real memory paths — the ones the memory system actually reads back. Read before
-writing (the read returns the version token), merge, never blind-overwrite. Do not create
-an index file and do not invent new paths.
+Three records. Where they live is decided by `core.md` §3: the Claude app's memory at the paths
+below, else the `.syrto/` equivalents in the project. Read before writing (in the Claude app's memory
+the read returns the version token), merge, never blind-overwrite. Do not create an index file and
+do not invent new paths.
 
 ### `/profile.md` — who the user is
 Company, role, department. Usually already present from ordinary use — read it rather than
@@ -57,7 +58,7 @@ Use this to order the Step 4 overview: relevant-to-profile first, the rest under
 - Rank / tier a list of accounts by financial fit. *(priority-ranker)*
 - Find upsell headroom in existing clients. *(upsell-potential-scout)*
 - Write personalised outreach — email + LinkedIn. *(outreach-writer)*
-- Fast lane — a quick, compact commercial profile of a company, from your calendar (the day's meetings — schedulala come routine con `/setup-briefing`) or spot by name, with the same fit read and ready talking points. *(briefing)*
+- Fast lane — a quick, compact commercial profile of a company, from your calendar (the day's meetings, if a calendar connector is available; schedulala come routine con `/setup-briefing`) or spot by name, with the same fit read and ready talking points. *(briefing)*
 
 **M&A & Strategy**
 - Build a buyer universe for a sell-side process. *(buyer-list)*
@@ -67,7 +68,7 @@ Use this to order the Step 4 overview: relevant-to-profile first, the rest under
 - Benchmark a company against its true peers. *(market-benchmark)*
 
 **Reporting**
-- Single-company report at a chosen depth — company only / + market / + peers / full — with a **taglio** dial: `analitico` (understand) or `commerciale` (qualify for sales: fit score, spend capacity, what to sell, go/no-go; livello 1 = quick commercial qualification). *(company-analysis)*
+- Single-company report at a chosen depth — company only / + market / + peers / full — with a **taglio** dial: `normale` (understand) or `commerciale` (qualify for sales: fit score, spend capacity, what to sell, go/no-go; livello 1 = quick commercial qualification). *(company-analysis)*
 - Finanza agevolata — screen & qualify companies for measures, EU size on group perimeter, capienza / de minimis, dossiers. *(finanza-agevolata)*
 
 ### Relevance by profile

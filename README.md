@@ -15,8 +15,8 @@ In Claude Code:
 /plugin install syrto-ai-claude@syrto
 ```
 
-The plugin connects to `https://mcp.syrto.ai/mcp`. The first Syrto tool call asks you to sign
-in with your Syrto account. Documentation: https://docs.syrto.ai
+The plugin connects to `https://mcp.syrto.ai/mcp`. Sign in with your Syrto account: in Claude
+Code, run `/mcp`, select the Syrto server and authenticate. Documentation: https://docs.syrto.ai
 
 ## Develop
 

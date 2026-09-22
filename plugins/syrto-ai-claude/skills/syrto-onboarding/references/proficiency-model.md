@@ -52,14 +52,16 @@ Executive angle, oriented to the implication. Technical but lean language. Few n
 the ones that matter, each carried with its implication — the value is in the read, not
 the bare figure.
 
-**M · concise** — *partner / C-level in insurance, corporate, law; analyst in law/agency;
-sales in banking/insurance.*
+**M · concise** — *partner / C-level in insurance, corporate, law; sales in banking/insurance.*
 Reasoned angle. Technical language with a brief gloss at first use. Medium depth, every
 number paired with one line of interpretation.
 
 **L · concise** — *marketing; sales in corporate/law/agency; non-analyst in marketing_agency.*
 Narrative / plain-language angle. No jargon. Few numbers, always translated into everyday
 language ("in forte crescita, circa +30% in tre anni").
+
+M · deep and L · deep (an analyst in law or marketing_agency, a CFO in a low-literacy sector) have no
+pattern of their own: use the language of their literacy level with the numeric depth of H · deep.
 
 ## Sector overlay — which goal the numbers serve
 
