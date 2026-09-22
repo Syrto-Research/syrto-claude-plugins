@@ -1,0 +1,19 @@
+{
+  "name": "syrto",
+  "owner": {
+    "name": "Syrto",
+    "url": "https://syrto.ai"
+  },
+  "metadata": {
+    "description": "Syrto plugins for Claude: financial intelligence on Italian companies."
+  },
+  "plugins": [
+    {
+      "name": "syrto-ai-claude",
+      "source": "./plugins/syrto-ai-claude",
+      "description": "Financial-intelligence assistant for Italian companies, built on Syrto: Sales & Marketing, M&A & Strategy, and Reporting skills over the Syrto MCP server.",
+      "category": "finance",
+      "homepage": "https://syrto.ai"
+    }
+  ]
+}
