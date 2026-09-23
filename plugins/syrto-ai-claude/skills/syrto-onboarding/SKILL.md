@@ -1,15 +1,13 @@
 ---
 name: syrto-onboarding
 description: >-
-  Onboard the user to the Syrto AI assistant and calibrate every future response
-  to their financial proficiency. Collects the user's company, role and department,
-  silently derives their sector→financial-literacy and depth profile, and persists it
-  to memory so all future chats orient automatically without re-asking. Also
-  captures deeper business context (products/services offered, what the company buys,
-  who it sells to and target profiles) into memory, and points the user to dedicated
-  Projects for activity-specific context. Trigger on first use of Syrto, or when the
-  user says "configura Syrto", "setup Syrto", "chi sono", "inizia", "onboarding",
-  "personalizza le risposte", "tara le risposte su di me", Not a prerequisite for other skills — those proceed with defaults when context is thin.
+  Set up or update the user's Syrto profile: company, role and department, a silent calibration of
+  how technical and how deep answers should be, and optional business context (what they sell, what
+  they buy, who they sell to), saved for future sessions where the host allows it. Use when the user
+  asks to set up, configure, personalise or update Syrto: "configura Syrto", "setup Syrto", "set up
+  Syrto", "onboarding Syrto", "personalizza le risposte", "tara le risposte su di me", "aggiorna il
+  mio profilo", "update my profile". Not a prerequisite: other Syrto skills proceed with defaults
+  when context is thin, so do not run this before answering a direct data question.
 ---
 
 # Syrto Onboarding & Proficiency Calibration
@@ -20,8 +18,8 @@ once, then reuses the answers forever:
 1. **Who is the user and what is their business?** (context layer)
 2. **How technical and how deep should answers be?** (proficiency layer)
 
-Both live in **memory**, so every future chat — in any session — starts already
-calibrated. Never make the user repeat this.
+Both are saved where `core.md` §3 says (the Claude app's memory, else `.syrto/` files in the
+project), so later sessions start calibrated. Reuse them instead of making the user repeat this.
 
 > Converse in the user's language (Italian by default for Syrto users). Instructions
 > below are for you; the quoted lines are ready-to-use Italian copy.
@@ -30,19 +28,21 @@ calibrated. Never make the user repeat this.
 
 Silently gather what you already know and pre-fill it: your own memory about the user (who they
 are, their company and role as you already know them from past conversations), any account/role
-settings, the conversation, the email domain, and connected context. Infer **company AND role**
+settings, existing `.syrto/` files, the conversation, the email domain, and connected context.
+Infer **company AND role**
 (and anything else you can) — not just company.
 
-**Never narrate this.** Do not say "no profile exists yet", "this is a first setup", "I can infer
-your company from your email domain", or otherwise explain what you found or how. No meta-comment
-about memory or setup. The rule is simple: **either you know a field and use it, or you ask for
-it — nothing in between.** If the suite profile already exists, greet briefly and stop.
+Do not describe what you inferred or how ("no profile exists yet", "I can infer your company from
+your email domain"): it reads as surveillance and adds nothing. Either you know a field and use it,
+or you ask for it. If the profile already exists, show what is saved in one line and ask what to
+change; stop there if nothing.
 
 ## Step 1 — Ask only what's genuinely missing (one line)
 
 After Step 0's silent inference, most fields are usually already known — a returning user's role
 and company are typically in memory or settings (e.g. a Sales role you've seen for months).
-**Do not ask for anything you already know, and do not present it back as a question.**
+Do not ask again for what you already know. One confirmation line is the exception, because the
+saved profile drives every later answer:
 
 - If company **and** role are known → open with a single friendly confirmation line, then
   continue based on the reply. Use the user's first name:
@@ -71,16 +71,17 @@ is itself revealing the profiling. Apply it silently.
 
 ## Step 3 — Persist to memory (silently)
 
-Write to the three paths in `references/memory-and-capabilities.md` — `/profile.md`,
-`/preferences.md`, `/areas/syrto-commercial-context.md`. Read each before writing (the read
-returns the version token), merge, never blind-overwrite. Store the
+Write the three records in `references/memory-and-capabilities.md` (`/profile.md`,
+`/preferences.md`, `/areas/syrto-commercial-context.md`) where `core.md` §3 says: the Claude app's
+memory, else the `.syrto/` files in the project. Read each before writing (in the Claude app's
+memory the read returns the version token), merge, never blind-overwrite. Store the
 derived literacy + depth AND a one-line behavior directive, so future sessions read the
 calibration directly.
 
-Do this **quietly** — do not narrate the memory plumbing. **Never tell the user you "have no
-persistent memory"**: it's confusing and off-putting, and contradicts what you already know
-about them. If you genuinely cannot persist right now, say nothing alarming — at most one neutral
-line that you'll keep it in mind going forward.
+Do this quietly: do not narrate routine storage. If you cannot save (no memory and no writable
+project in this host), say so in one neutral line, for example «Per ora lo tengo a mente in questa
+conversazione; per ritrovarlo le prossime volte serve la memoria attiva o un progetto.» The user
+should not believe their profile is saved when it is not.
 
 ## Step 4 — Capabilities overview (scannable, never a wall of text)
 
@@ -96,17 +97,20 @@ the relevance map in `references/memory-and-capabilities.md`. Keep the whole thi
 
 ## Step 5 — Invite deeper business context
 
-Explain that the more business context Syrto has, the better the answers — and that it
-all goes into memory, so it's reused in every chat. Invite (do not force):
+Explain that the more business context Syrto has, the better the answers, and that it is saved
+(per `core.md` §3) so later chats reuse it. Invite (do not force):
 
 - the specific **products/services** they offer,
 - what the company **buys** (inputs),
 - **who they sell to** — the typical targets and their characteristics.
 
-Distill whatever they give (typed or, for this step, pasted) into `/areas/syrto-commercial-context.md`
-in memory per the schema. Merge into existing content; never overwrite blindly.
+Distill whatever they give (typed or, for this step, pasted) into the commercial context
+(`/areas/syrto-commercial-context.md`, or its fallback in `core.md` §3) per the schema. Merge into
+existing content; never overwrite blindly.
 
-Then point them to **dedicated Projects** for heavy, activity-specific context:
+Then, only if the host offers projects (the Claude app and Cowork do; Claude Code does not), point
+them to **dedicated Projects** for heavy, activity-specific context. Keep the CRM sentence only if a
+CRM connector can actually be added in this host, and never say one is connected without checking:
 
 > "Per attività specifiche che richiedono di caricare file mirati o export Excel/CRM,
 > conviene creare un **Progetto dedicato**: lì definisci le istruzioni e impacchetti tutto
@@ -124,8 +128,8 @@ the user overrides the profile.** The profile governs only tone, register, and h
 numeric depth and explanation to wrap around the content — not what content a skill
 decides to include.
 
-The rest of the suite is governed by the shared layers in `${CLAUDE_PLUGIN_ROOT}/shared/`:
-`core.md` (what stays in chat vs a file, HTML→PDF, the visual canon and its override
-via a user template saved to `/preferences.md`), `core.md` (consistency, context
-reuse, the SYRTO-HANDOFF format), and `syrto-reference.md` (tools + metrics). Onboarding only
-sets the calibration and the context; those layers do the rest.
+`core.md` §5 points every skill to this calibration, so it applies beyond onboarding. The rest of
+the suite is governed by `${CLAUDE_PLUGIN_ROOT}/shared/core.md` (chat vs file, the visual canon and
+its override via a user template saved to preferences, context reuse, the SYRTO-HANDOFF format) and
+the capability map, `${CLAUDE_PLUGIN_ROOT}/shared/syrto-reference.md`. Onboarding only sets the
+calibration and the context; those layers do the rest.

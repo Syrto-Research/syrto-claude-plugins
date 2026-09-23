@@ -1,162 +1,121 @@
-# Syrto Tool & Metric Reference
+# Syrto capability map
 
-Lookup layer. Operating rules are in `core.md`.
+Tool names below are current as of 2026-09-22; if a name is missing, pick the tool whose description
+matches the capability.
 
-Never expose internal identifiers (slug, syrto_code, template_slug) to users — use the
-human-readable name / display_name.
+Skills name capabilities ("resolve the company", "the financial analysis"); this file maps them to
+tools. How to call a tool (parameters, limits, pages, field meanings, which ids to pass, what to show
+the user) is in that tool's own description, which the Syrto server sends on every connection.
+Follow the tool description over anything written here, and do not copy call details into skills.
+Operating rules are in `core.md`.
 
-## Tools
+## Capabilities
 
-### Resolving
+| Capability | The suite uses it for | Tool (current) | Suite policy on top |
+|---|---|---|---|
+| **Resolve the company** (by name or tax ID) | Every flow that starts from a named company | `syrto_find_company` | Prefer the tax ID when you have it. Take the candidate its returned details identify; ask the user only when they do not. |
+| **Resolve a list of tax IDs** | Client lists, CRM exports, a person's companies, subsidiaries | `syrto_lookup_companies_by_tax_id` | Batch; never resolve a list one name at a time. |
+| **The company profile** | Business model, sector, size, location, registry risk flags, state-aid summary | `syrto_get_company_anagraphic` | Always the first read: business fit comes from here, never from the web. Pass every company in hand in one call. |
+| **The financial analysis** (with its automatic benchmark) | Health, growth, liquidity, solvency, structure; the Fit Score's solidity and growth inputs | `syrto_get_company_analysis` | The default financial read for one company. Every metric carries a 1-5 score against its reference market; ask for the reference values too only when the answer compares with the market. It does not carry the spend-hook cost lines or net worth (see the metric table). |
+| **A specific metric read** (one company) | Spend-hook cost lines, net worth, cash flow, anything the analysis lacks | `syrto_get_company_metrics` | After the analysis, for named metrics only. |
+| **Compare many companies** (same metrics) | Scored lists, peer tables, portfolios, spend hooks for a batch | `syrto_compare_companies` | One call per batch, never a per-company loop. All companies on one fiscal year (see Suite-wide rules). |
+| **Ownership structure** | Who controls the budget, parent or shell detection, group ties, officers, legal form | `syrto_get_company_structure` | When the real buyer or the group matters. Its person ids feed a person-anchored search directly. |
+| **Registered branches** | Presence beyond the head office | `syrto_list_company_branches` | Registry records only: never evidence of a plant, shop, team or sales territory. |
+| **Company search** (semantic description plus filters) | Prospecting, lookalikes, buyer and add-on discovery, perimeters | `syrto_search_companies` | Sector codes only for hard exclusions or an explicit user request, never as a default gate: they drop the out-of-sector matches semantic search exists to find. The server's default relevance cutoff is 0.8; a skill that wants another value states it with its reason. Page only as far as the deliverable needs. |
+| **The search-filter documentation** | Before building any filter (search, aggregates, radar populations) | `syrto_get_search_filter_docs` | Read the sections you need instead of guessing field names. |
+| **Aggregate a population** | Market sizing, benchmarks, counts, splits by sector, area or size in one call, typical ranges, totals | `syrto_aggregate_companies` | One call with a breakdown, not one call per cell. Several search texts in one filter count as their union, so overlapping sub-markets can be totalled without double counting (the filter documentation gives the limit). |
+| **The positioning radar** (size x efficiency, 0-100, cross-sector) | A company against its sector; buyers or targets side by side; portfolio vs watchlist | `syrto_radar_map` (in the conversation), `syrto_radar_chart` (image for a file) | Optional in every skill. Use it when positioning is the question, not when the user asked for figures. The image version only when a file is being written. |
+| **The thematic spider profile** | Per-theme strengths and weaknesses against local peers | `syrto_get_spider_data` | A different concept from the radar; never call one by the other's name. |
+| **Metric-definition search** | Confirming a slug, explaining a metric | `syrto_search_metric_definitions`, `syrto_list_available_metrics` | Confirm any slug before using it, including those in the table below. |
+| **Financial statements** | Only when the user asks for a statement | `syrto_list_financial_statement_templates`, `syrto_generate_financial_statement` | Never part of a routine overview. |
+| **Find a person** | "Which companies does X run or own?", person-anchored searches | `syrto_find_person` | When you already have the company, prefer the person id from its ownership structure: a name search can pick a namesake. |
+| **Usage report** | "How much have I used?" | `syrto_get_usage` | Personal consumption only; plans and allowances are in the dashboard. |
+| **Official documents (paid)** | No skill flow | `syrto_list_official_documents`, `syrto_request_official_document` | Never bought as a step of a flow. On an explicit user request only, after naming the document and its credit cost and getting a yes. Listing the catalogue and re-issuing an expired link spend no credits. |
+| **Person contacts (paid)** | No skill flow | `syrto_get_person_contacts`, `syrto_request_person_contacts` | The suite never buys contacts, including inside prospect lists. If the user explicitly asks, name whose contacts and the credit cost, and get a yes first. Reading contacts the organization already bought spends no credits. |
 
-| Tool | Use it to |
+## Suite-wide rules
+
+- **Credits and usage are different.** Credits pay for official documents and person contacts; the
+  suite never spends them on its own. Every data call counts toward the user's Syrto usage, so skip
+  calls the deliverable will not use.
+- **One Syrto call at a time.** Some clients time out or mix up results when tool calls run in
+  parallel.
+- **Fiscal year.** Never hard-code one. Use the year the chain already fixed (see the handoff in
+  `core.md` §8), else the latest year the companies have filed; the tool descriptions say which
+  years have broad coverage.
+- **The automatic benchmark is regional.** The 1-5 scores, the reference values and the spider axes
+  compare with companies of the same sector class and size band in the company's macro-area
+  (country-wide for large companies). Say it in those terms («rispetto ad aziende dello stesso
+  settore e della stessa classe dimensionale nella sua macro-area»). Never call it «media nazionale
+  di settore», never call it a median or an average unless the skill computed that statistic itself,
+  and never name the region. For a perimeter the user defines, run `market-benchmark`.
+- **Listed status.** No tool reports whether a company is listed. Only an S.p.A. or an S.a.p.a. can
+  be listed: use the legal form from the ownership structure to rule it out, and a web check for the
+  names that matter.
+- **Statement basis.** See `core.md` §7.10.
+
+## Metric concepts
+
+Skills name the concept; the slug lives only here. Slugs are current as of 2026-09-22: confirm any
+slug through the metric-definition search before using it, and show the returned name, never the
+slug. "In the analysis" means the financial analysis returns it (checked on 2026-09-22; category
+membership is server configuration and can change). Otherwise fetch it with a specific metric read
+for one company, or through the comparison for many.
+
+| Concept | Slug | In the analysis | Suite use |
+|---|---|---|---|
+| Value of production | `value_of_production` | yes | Primary size measure; spend hook for generalists |
+| Revenue from sales and services | `revenues_from_sales_and_services` | yes | Top line; ratio denominator |
+| Services costs | `cost_services` | no | Spend hook: software and services sellers |
+| Raw materials costs | `cost_raw_materials` | no | Spend hook: materials sellers |
+| Personnel costs | `personnel_costs` | no | Spend hook: staffing and payroll sellers |
+| Production costs | `production_costs` | no | Spend hook: broad operating spend |
+| Personnel costs / revenue | `personnel_cost_to_revenue` | yes | Labour intensity |
+| EBITDA, EBITDA margin | `ebitda`, `ebitda_margin` | yes | Profitability |
+| EBIT | `ebit` | yes | Operating result |
+| ROE (return on equity) | `roe` | yes | Profitability for owners |
+| Net profit | `profit` | yes | Negative is a loss: credit-risk flag |
+| Net worth (equity) | `net_worth` | no | Negative is serious distress |
+| Net financial position | `net_financial_position` | yes | Debt level |
+| Net financial position / net worth | `financial_leverage` | yes | Fit Score solidity |
+| Net financial position / EBITDA | `net_financial_position_ebitda` | yes | Debt sustainability |
+| Current ratio | `secondary_liquidity` | yes | Below 1 is a liquidity flag. The slug is not "current_ratio". |
+| Quick ratio | `quick_ratio` | yes | Below 1 is a liquidity flag |
+| Cash conversion cycle | `cash_conversion_cycle` | yes | Days; longer is weaker |
+| Revenue CAGR, 3 years | `revenue_cagr_3_years` | yes | Growth momentum |
+| Invested capital | `invested_capital` | yes | |
+| Total assets | `total_assets` | no | EU size test (finanza agevolata) |
+| Intangible fixed assets (B.I.), goodwill (B.I.5) | `intangible_fixed_assets`, `goodwill` | no | Intangible-intensity signals (finanza agevolata) |
+| Unlevered free cash flow | `ufcf` | no | Cash generation |
+| Payables (debiti) | `liabilities` | no | Not total liabilities |
+
+Percentages and ratios arrive as decimals (0.1065 = 10,65%); see `core.md` §4.
+
+## Presentation
+
+Numbers follow the house style in `core.md` §5.
+
+Size bands, in Italian:
+
+| Code | Label |
 |---|---|
-| `syrto_find_company` | Name → `company_id`. Strip legal suffixes (S.p.A., S.r.l.) first. Returns candidates — pick the best or ask. Also returns the org's `credit_balance`. |
-| `syrto_lookup_companies_by_tax_id` | Resolve by codice fiscale / VAT — when the name is ambiguous or you need the exact legal entity. Takes up to 20 at once. |
+| L | Grande |
+| M | Media |
+| S | Piccola |
+| XS | Micro impresa |
 
-### Reading a company
+Ownership types (who controls the company), in Italian. Show the label, never the code:
 
-| Tool | Use it to |
+| Code | Label |
 |---|---|
-| `syrto_get_company_anagraphic` | Business activity, sector/ATECO, size, employees, website, target markets. ALWAYS read first. |
-| **`syrto_get_company_analysis`** | **The default financial read.** One call, pre-grouped: revenue, value of production, profit, EBITDA, EBIT, ROE/ROA/ROI/ROIC, growth, working capital, cash conversion cycle, current ratio, NFP, debt/EBITDA, leverage, asset composition, capex intensity — plus radar scores and the prior year for trend. |
-| `syrto_get_company_metrics` | Only for metrics **outside** those categories (e.g. free cash flow, DPO) or a 1–5 year history. Large response — request fewer years if it overflows. |
-| `syrto_get_company_structure` | Ownership, shareholders, beneficial owners, subsidiaries, officers. Each carries a `person_id`. |
-| `syrto_list_company_branches` | Registered secondary locations (sedi secondarie / unità locali), with HQ returned separately. |
-| `syrto_get_spider_data` | Thematic radar/spider deep-dive. |
-| `syrto_generate_financial_statement` | Full statement reconstruction. Needs a `template_slug` from `syrto_list_financial_statement_templates` — don't guess one, and don't fetch templates as part of a routine overview. |
+| FAMILY | Familiare |
+| FAMILY_OWNED_GROUP | Gruppo familiare |
+| FINANCIALLY_OWNED_GROUP | Proprietà finanziaria |
+| INDUSTRIAL_GROUP | Gruppo industriale |
+| FINANCIAL | Società finanziaria |
+| OTHER | Altro |
 
-> **Do not open a company read with `syrto_get_company_metrics`, `syrto_list_available_metrics`
-> or `syrto_search_metric_definitions`.** `get_company_analysis` already returns everything a
-> broad analysis needs in a single call, with no slug selection. Reach for the others only when
-> a specific metric is confirmed to be outside its categories.
+Source line, closing every exported deliverable (the server sends no disclaimer to copy):
 
-**Free sector benchmark.** `include_market_data: true` on `get_company_analysis` adds a peer
-value per metric at no extra call. The reference market is same NACE 4-digit + size bucket +
-macro-region (country-wide for L), and **no field names it** — so never present it as "the
-Italian sector average". It is a quick read; for a real perimeter use `market-benchmark`.
-
-### Discovery & comparison
-
-| Tool | Use it to |
-|---|---|
-| `syrto_search_companies` | Semantic + filtered search. The engine for discovery and lookalikes. |
-| `syrto_aggregate_companies` | Sector/peer aggregates → benchmark medians, market sizing. |
-| `syrto_compare_companies` | Many companies, same metrics, one call. |
-| `syrto_get_search_filter_docs` | The authoritative field list for the `filters` object. Call it before assembling filters rather than guessing field names. |
-| `syrto_list_available_metrics` / `syrto_search_metric_definitions` | Find an exact metric slug when one is missing. |
-
-### People
-
-| Tool | Use it to |
-|---|---|
-| `syrto_find_person` | Name → `person_id`, with up to five officerships, shareholdings and beneficial ownerships each. Also returns `credit_balance`. |
-
-Two things this unlocks that the suite did not have:
-
-1. **Person → companies.** The returned company entries identify themselves by **`tax_id`, not
-   company id** — collect the tax ids and batch them through `syrto_lookup_companies_by_tax_id`
-   (20 per call) to get usable ids. A rare entry has no tax id, or comes back `not_found`: that
-   company is identifiable by `legal_name` only, so say so rather than guessing an id.
-2. **The `people` filter section** on `syrto_search_companies` and `syrto_aggregate_companies`
-   takes `person_id` values — so a search can be anchored on a person.
-
-**Matching is strict.** Exact spelling, no fuzzy matching, names stored surname-first
-(`Rossi Mario`). **Capitalise as stored**: only the exact rung is case-sensitive, so a
-lower-cased query silently skips it and answers from the prefix rung, burying the people who
-carry the name exactly. Exactly one of three rungs answers a call — exact, else prefix, else
-substring; `warning` names the rung and how to widen. Use `match: "contains"` to widen for a
-compound surname (`Conti Marco` → `Bonanno Conti Marco`).
-
-> **Contact purchase is out of scope for this suite.** `syrto_get_person_contacts` and
-> `syrto_request_person_contacts` exist and spend the organization's credits. Do not call them
-> as part of any skill flow. If a user explicitly asks to buy contacts, tell them the cost first
-> and get explicit agreement — never as an automatic step in a prospect list.
-
-### Official documents
-
-`syrto_list_official_documents` is free to call and lists what's available (visure, filed
-accounts, statuti, protesti) with slugs and credit costs, what the organization already owns,
-and the credit balance. Purchases are **organization-wide** — a colleague may already have paid.
-Download links expire after ~6 hours and this tool **re-issues them at no cost**, so "the link
-doesn't work" is a re-list, never a re-purchase.
-
-`syrto_request_official_document` **spends credits**. Only on explicit user request, after
-stating the document name and its cost and getting agreement.
-
-### Usage
-
-`syrto_get_usage` reports the **signed-in user's own** consumption in CU across four windows.
-It is not the organization's total, not a remaining balance, and not a bill. There is no
-per-conversation figure. The org's **remaining credits** come back free on `find_company`,
-`find_person` and `list_official_documents`. Anything about plans, allowances, members or
-passwords → the dashboard (https://dashboard.syrto.ai).
-
-## Radar — available, not mandatory
-
-`syrto_radar_map` and `syrto_radar_chart` score companies on **size × efficiency (0–100)**,
-scaled across Syrto's whole database rather than within a sector — so companies from *different*
-sectors sit on the same axes and compare directly. They are also the **only** tools that return
-forecast points, and those are labelled.
-
-Worth reaching for when a positioning question is the actual question — a company against its
-sector, a set of buyers or add-on targets side by side, a portfolio against a watchlist. Not
-required by any skill, and not a replacement for metric analysis when specific numbers are what
-the user asked about.
-
-- `syrto_radar_map` — the on-screen answer. **This client may not render the widget**, so treat
-  what comes back as numbers: each company's earliest filed position, its latest, and where its
-  projection ends. Report that in prose or a small table; don't read coordinates aloud.
-- `syrto_radar_chart` — the same chart as a self-contained **SVG**, for writing into a file.
-  Use it when an HTML report or PDF is being produced: write it to `.svg` and reference it, or
-  inline it in the HTML. Vector, no network, no fonts needed.
-
-`peer_filters` and `aggregates` accept the same `filters` object as `syrto_search_companies`,
-**resolved inside the call** — so "this company against its sector" needs no prior search.
-`aggregates` draws a population's average as one line; `peer_filters` plots its members.
-`company_lists` colours named sets separately. Right = larger, up = more efficient; 50 is the
-scale midpoint, not an average, so read positions relative to the other companies plotted.
-
-## Core metric slugs
-
-| Concept | Slug | Notes |
-|---|---|---|
-| Revenue / production value | `value_of_production` | Primary size measure. |
-| Revenue from sales & services | `revenues_from_sales_and_services` | Denominator for many ratios. |
-| Production costs | `production_costs` | |
-| Raw materials purchases | `cost_raw_materials` | Spend hook — materials sellers. |
-| Services costs | `cost_services` | Spend hook — software/services sellers. |
-| Personnel costs | `personnel_costs` | Spend hook — staffing/payroll sellers. |
-| EBITDA / margin | `ebitda` · `ebitda_margin` | Margin is a ratio (0.12 = 12%). |
-| EBIT | `ebit` | |
-| Net profit | `profit` | Negative = loss, credit-risk flag. |
-| Total assets / liabilities | `total_assets` · `liabilities` | |
-| Net worth | `net_worth` | Negative = serious distress. |
-| Net financial position | `net_financial_position` | Leverage vs equity. |
-| Current / quick ratio | `current_ratio` · `quick_ratio` | < 1 = liquidity flag. |
-| Cash conversion cycle | `cash_conversion_cycle` | Days; longer = weaker. |
-| 3-year revenue CAGR | `revenue_cagr_3_years` | Growth momentum. |
-| Invested capital | `invested_capital` | |
-| Personnel cost / revenue | `personnel_cost_to_revenue` | Ratio. |
-
-Slug missing from a response → `syrto_search_metric_definitions`, never a guess.
-
-## Search parameters that matter
-
-- `match_cutoff` — minimum semantic relevance, e.g. `0.75`. Below that is noise.
-- `sort_by: match_score desc` — rank by relevance, not size. Big companies are not the best matches.
-- `nace` — OPTIONAL. Hard exclusions or an explicit user-requested narrowing only. Never a
-  default target gate, or you drop the out-of-sector targets semantic search exists to surface.
-- `semantic_search` and `match_cutoff` go inside `filters.anagraphic`. Cursor pagination
-  (`after`, 25/page) — there is no `offset` / `limit`.
-
-## Data hygiene
-
-- Percentage and ratio metrics arrive as decimals (0.1065 = 10.65%). Convert before use.
-- Size mapping: L = Grande · M = Media · S = Piccola · XS = Micro impresa.
-- A company record is its **individual** statement unless another basis was requested — the
-  `consolidated` field says which. Group figures can differ by orders of magnitude.
-- Branches are **registry records of registered locations**. Do not infer that a site is
-  operating, staffed, a plant/shop/warehouse, a sales territory, or where revenue arises. An
-  empty list is not evidence of single-site operation. Branches carry no name of their own.
-- Carry the Syrto `note` / disclaimer into every exported deliverable.
+> Fonte: elaborazione su dati Syrto (www.syrto.ai) da bilanci depositati. Base: [individuale |
+> consolidato]. Ultimo esercizio disponibile: [anno].

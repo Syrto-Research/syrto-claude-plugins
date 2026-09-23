@@ -1,6 +1,6 @@
 {
   "name": "syrto-ai-claude",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Syrto AI Claude — financial-intelligence assistant for Italian companies, built on Syrto. Bundles three verticals — Sales & Marketing, M&A & Strategy, and Reporting — over a single shared core for method, output style and Syrto tool conventions. Connects to the Syrto MCP server; sign in with a Syrto account.",
   "author": {
     "name": "Syrto"
