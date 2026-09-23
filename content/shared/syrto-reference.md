@@ -58,9 +58,11 @@ Operating rules are in `core.md`.
 
 Skills name the concept; the slug lives only here. Slugs are current as of 2026-09-22: confirm any
 slug through the metric-definition search before using it, and show the returned name, never the
-slug. "In the analysis" means the financial analysis returns it (checked on 2026-09-22; category
-membership is server configuration and can change). Otherwise fetch it with a specific metric read
-for one company, or through the comparison for many.
+slug. "In the analysis" says whether the financial analysis usually returns it (checked on
+2026-09-23 on two companies in different sectors). It returns only what a filing supports, so a
+"yes" can still be missing for a given company or year, and "sometimes" rows come and go: when a
+figure is missing, fetch it with a specific metric read for one company, or through the comparison
+for many.
 
 | Concept | Slug | In the analysis | Suite use |
 |---|---|---|---|
@@ -81,12 +83,12 @@ for one company, or through the comparison for many.
 | Net financial position / EBITDA | `net_financial_position_ebitda` | yes | Debt sustainability |
 | Current ratio | `secondary_liquidity` | yes | Below 1 is a liquidity flag. The slug is not "current_ratio". |
 | Quick ratio | `quick_ratio` | yes | Below 1 is a liquidity flag |
-| Cash conversion cycle | `cash_conversion_cycle` | yes | Days; longer is weaker |
+| Cash conversion cycle | `cash_conversion_cycle` | sometimes | Days; longer is weaker |
 | Revenue CAGR, 3 years | `revenue_cagr_3_years` | yes | Growth momentum |
 | Invested capital | `invested_capital` | yes | |
 | Total assets | `total_assets` | no | EU size test (finanza agevolata) |
 | Intangible fixed assets (B.I.), goodwill (B.I.5) | `intangible_fixed_assets`, `goodwill` | no | Intangible-intensity signals (finanza agevolata) |
-| Unlevered free cash flow | `ufcf` | no | Cash generation |
+| Unlevered free cash flow | `ufcf` | sometimes | Cash generation |
 | Payables (debiti) | `liabilities` | no | Not total liabilities |
 
 Percentages and ratios arrive as decimals (0.1065 = 10,65%); see `core.md` §4.
