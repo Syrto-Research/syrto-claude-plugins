@@ -20,7 +20,7 @@ metadata:
 # Finanza Agevolata
 
 ## Suite integration (read first)
-Follow `${CLAUDE_PLUGIN_ROOT}/shared/core.md` (method, context, output, efficiency, handoff) and the capability map (`${CLAUDE_PLUGIN_ROOT}/shared/syrto-reference.md`), which says which tool serves each capability named here. Reuse any upstream `SYRTO-HANDOFF` before calling Syrto; emit one when you feed another skill. Deep tables and the measure catalogue are in `references/classification-and-measures.md` — read it before profiling or prospecting; do not restate it here.
+Follow `{{ROOT}}/shared/core.md` (method, context, output, efficiency, handoff) and the capability map (`{{ROOT}}/shared/syrto-reference.md`), which says which tool serves each capability named here. Reuse any upstream `SYRTO-HANDOFF` before calling Syrto; emit one when you feed another skill. Deep tables and the measure catalogue are in `references/classification-and-measures.md` — read it before profiling or prospecting; do not restate it here.
 
 ## Who you serve
 A finanza-agevolata consultant who already knows the measures — do not teach the ABC. Deliver operational value: turn a regulatory requirement into a filter on the data, and a list of companies into a qualified commercial pipeline.

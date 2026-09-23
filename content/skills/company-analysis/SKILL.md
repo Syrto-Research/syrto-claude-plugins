@@ -20,10 +20,10 @@ metadata:
 # Company Analysis
 
 ## Suite integration (read first)
-Follow `${CLAUDE_PLUGIN_ROOT}/shared/core.md` (method, context, output, efficiency, handoff) and the capability map (`${CLAUDE_PLUGIN_ROOT}/shared/syrto-reference.md`), which says which tool serves each capability named here. Reuse any upstream `SYRTO-HANDOFF` before calling Syrto; emit one when you feed another skill. This skill **composes** `market-benchmark`, `market-sizing` and `syrto-comparables` as building blocks — reuse their logic, do not re-implement it.
+Follow `{{ROOT}}/shared/core.md` (method, context, output, efficiency, handoff) and the capability map (`{{ROOT}}/shared/syrto-reference.md`), which says which tool serves each capability named here. Reuse any upstream `SYRTO-HANDOFF` before calling Syrto; emit one when you feed another skill. This skill **composes** `market-benchmark`, `market-sizing` and `syrto-comparables` as building blocks — reuse their logic, do not re-implement it.
 
 ## Read your context first
-From the profile (core §3): the user's sector and role. They drive **which numbers to feature** and the language register. The goal each sector's numbers serve is listed in `${CLAUDE_PLUGIN_ROOT}/skills/syrto-onboarding/references/proficiency-model.md` ("Sector overlay"); if the sector-relevant emphasis is unclear, choose it from there yourself rather than asking the user to pick metrics. Also read the preferences (core §3) if present: it stores a default **livello** (a tier, or "ask each time") and a default **taglio** (`normale` / `commerciale`, or "ask each time").
+From the profile (core §3): the user's sector and role. They drive **which numbers to feature** and the language register. The goal each sector's numbers serve is listed in `{{ROOT}}/skills/syrto-onboarding/references/proficiency-model.md` ("Sector overlay"); if the sector-relevant emphasis is unclear, choose it from there yourself rather than asking the user to pick metrics. Also read the preferences (core §3) if present: it stores a default **livello** (a tier, or "ask each time") and a default **taglio** (`normale` / `commerciale`, or "ask each time").
 
 ## The two dials (independent)
 Every report has two orthogonal dials: **livello** (depth / scope) and **taglio** (lens).

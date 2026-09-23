@@ -34,25 +34,51 @@ One exception, in `syrto-comparables` only: when Syrto has no activity descripti
 target, a description drafted from its website may seed the peer search, after the user confirms
 the site and approves the text, and the output says the search started from it.
 
+<!-- only:claude -->
 ## 3. Memory — where context lives
+<!-- /only -->
+<!-- only:openai -->
+## 3. Project context
+<!-- /only -->
 
+<!-- only:claude -->
 Three real paths. Read what you need; do not invent files or indexes.
+<!-- /only -->
+<!-- only:openai -->
+Three paths relative to the active project root. Read what you need; do not invent files or indexes.
+<!-- /only -->
 
 | Path | Holds |
 |---|---|
+<!-- only:claude -->
 | `/profile.md` | The user's company, role, department. Usually already there — read, don't re-ask. |
 | `/preferences.md` | Output defaults: preferred format, register, numeric depth, default report livello/taglio. |
 | `/areas/syrto-commercial-context.md` | ICP, what they sell, target band, spend hook + capture rate, exclusions, portfolio, brand canon. |
+<!-- /only -->
+<!-- only:openai -->
+| `.syrto/profile.md` | The user's company, role, department. If present, read it rather than re-asking. |
+| `.syrto/preferences.md` | Output defaults: preferred format, register, numeric depth, default report livello/taglio. |
+| `.syrto/commercial-context.md` | ICP, what they sell, target band, spend hook + capture rate, exclusions, portfolio, brand canon. |
+<!-- /only -->
 
+<!-- only:claude -->
 These paths are the Claude app's memory. In a host without it (Claude Code), keep the same three
 records as `.syrto/profile.md`, `.syrto/preferences.md` and `.syrto/commercial-context.md` in the
 project folder. With neither, keep them in the conversation and say once that they will not carry
 over, so the user does not assume they are saved.
+<!-- /only -->
+<!-- only:openai -->
+Where no writable project is available (for example a ChatGPT chat without a project folder),
+keep the three records in the conversation and say once that they will not carry over, so the
+user does not assume they are saved.
+<!-- /only -->
 
 Rules: read before writing; merge, never blind-overwrite; if a field a skill needs is absent, ask
 for it once in plain language and offer to save it. A missing field is "not configured" — never
 invent a value.
+<!-- only:claude -->
 In the Claude app's memory, the read returns the version token a write needs.
+<!-- /only -->
 
 **Do not gate work on memory.** If the profile is thin, proceed with sensible defaults and
 say which assumption you made. Do not run an onboarding interrogation before answering a
@@ -117,8 +143,14 @@ The dividing line is intent, never all-or-nothing.
 
 Never dump a long report as raw text in chat; never hide the key finding only inside a file.
 
+<!-- only:claude -->
 - **Tabular data** → an Excel file, built with your client's spreadsheet capability (in Claude, the
   `xlsx` skill). With none available, a CSV.
+<!-- /only -->
+<!-- only:openai -->
+- **Tabular data** → an Excel file, built with your client's spreadsheet capability (in ChatGPT and
+  Codex, the `spreadsheets` skill). With none available, a CSV.
+<!-- /only -->
 - **PDF** → your client's PDF capability, with the same tokens as the HTML so the two are twins. With
   none available, deliver the HTML and say it prints to PDF.
 - **Numbers** in Italian deliverables follow one house style: `12,3 Mln €`, `1,2 Mld €`,
@@ -132,7 +164,7 @@ Never dump a long report as raw text in chat; never hide the key finding only in
 
 Depth and register follow the user's calibration: literacy × depth, plus the sector goal the numbers
 should serve, defined in
-`${CLAUDE_PLUGIN_ROOT}/skills/syrto-onboarding/references/proficiency-model.md` and stored in
+`{{ROOT}}/skills/syrto-onboarding/references/proficiency-model.md` and stored in
 preferences. With nothing stored, infer it from the role: a C-level gets a tight digest, an analyst a
 richer one. Apply it silently: never describe the register you are adopting.
 

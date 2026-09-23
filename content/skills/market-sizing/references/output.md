@@ -25,7 +25,7 @@ La nota parla al lettore: niente nomi di strumenti, parametri o numeri di step i
 
 ## Step 7: Output Finale
 
-Le tabelle e i blocchi descritti qui sotto sono il **contenuto** del deliverable: titolo del mercato, nota Metodo, perimetro complessivo, composizione per sotto-mercato (Modalità B), aziende campione (Modalità B) e note/disclaimer. La nota Metodo va comunque **in cima**, prima di tutto il resto. Il rendering — formato, canone estetico, offerta del PDF, digest in chat — segue `${CLAUDE_PLUGIN_ROOT}/shared/core.md` (leggi le preferenze, core §3, sovrascrivibili da un template dell'utente). Non costruire un HTML con stile proprio.
+Le tabelle e i blocchi descritti qui sotto sono il **contenuto** del deliverable: titolo del mercato, nota Metodo, perimetro complessivo, composizione per sotto-mercato (Modalità B), aziende campione (Modalità B) e note/disclaimer. La nota Metodo va comunque **in cima**, prima di tutto il resto. Il rendering — formato, canone estetico, offerta del PDF, digest in chat — segue `{{ROOT}}/shared/core.md` (leggi le preferenze, core §3, sovrascrivibili da un template dell'utente). Non costruire un HTML con stile proprio.
 
 Il contenuto dipende dalla modalità.
 
