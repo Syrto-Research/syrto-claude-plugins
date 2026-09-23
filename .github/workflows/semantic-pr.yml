@@ -1,0 +1,27 @@
+name: Semantic PR
+
+# Validates the PR title against Conventional Commits, the string that becomes the squash commit.
+#
+# The organization enforces this with the "Semantic PR required" ruleset, which runs the copy in
+# Syrto-Research/shared-github-workflows. That repository is private, and a public repository cannot
+# run workflows from a private one, so this repo keeps its own copy and requires it through a
+# repository ruleset on main instead. Keep it in step with shared-github-workflows' semantic-pr.yml.
+#
+# "edited" is required: without it, fixing a wrong title would not re-run the check.
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  pull-requests: read
+
+jobs:
+  validate:
+    name: Validate PR title
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate PR title against Conventional Commits
+        uses: amannn/action-semantic-pull-request@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
