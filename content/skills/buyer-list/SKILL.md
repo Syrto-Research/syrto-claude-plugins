@@ -18,7 +18,7 @@ description: >-
 
 ## Suite integration (read first)
 
-Follow `${CLAUDE_PLUGIN_ROOT}/shared/core.md` (method, context, output, efficiency, handoff) and the capability map (`${CLAUDE_PLUGIN_ROOT}/shared/syrto-reference.md`), which says which Syrto tool serves each capability named in this skill. If an upstream skill left a `SYRTO-HANDOFF` for the target (for example `company-analysis`), reuse it in Step 1 and fetch only what is missing.
+Follow `{{ROOT}}/shared/core.md` (method, context, output, efficiency, handoff) and the capability map (`{{ROOT}}/shared/syrto-reference.md`), which says which Syrto tool serves each capability named in this skill. If an upstream skill left a `SYRTO-HANDOFF` for the target (for example `company-analysis`), reuse it in Step 1 and fetch only what is missing.
 
 ## Language
 

@@ -17,7 +17,7 @@ description: >
 
 # Market Benchmark
 
-Segui `${CLAUDE_PLUGIN_ROOT}/shared/core.md` (metodo, output, handoff) e la mappa delle capacità (`${CLAUDE_PLUGIN_ROOT}/shared/syrto-reference.md`: quale tool risponde a ogni capacità, e gli slug delle metriche). Se esiste un `SYRTO-HANDOFF` a monte, riusane id e dati prima di chiamare Syrto (core §8).
+Segui `{{ROOT}}/shared/core.md` (metodo, output, handoff) e la mappa delle capacità (`{{ROOT}}/shared/syrto-reference.md`: quale tool risponde a ogni capacità, e gli slug delle metriche). Se esiste un `SYRTO-HANDOFF` a monte, riusane id e dati prima di chiamare Syrto (core §8).
 
 Questa skill posiziona **una singola azienda** contro l'**aggregato dei suoi veri peer** — le aziende che fanno davvero la stessa cosa, trovate per attività reale via ricerca semantica Syrto, non per codice ATECO. Restituisce le metriche dell'azienda affiancate alla **media dei peer** (sopra/sotto), il **numero di aziende** del perimetro e il **valore aggregato** dei peer di pari classe dimensionale.
 
@@ -142,7 +142,7 @@ Se l'utente vuole tagliare o estendere il set, assecondalo.
 
 ## Step 5 — Output
 
-I blocchi qui sotto sono il **contenuto** del deliverable. Il rendering — formato, canone estetico, offerta del PDF, digest in chat — segue `${CLAUDE_PLUGIN_ROOT}/shared/core.md` (leggi le preferenze, core §3, sovrascrivibili da un template dell'utente). Non costruire un HTML con stile proprio.
+I blocchi qui sotto sono il **contenuto** del deliverable. Il rendering — formato, canone estetico, offerta del PDF, digest in chat — segue `{{ROOT}}/shared/core.md` (leggi le preferenze, core §3, sovrascrivibili da un template dell'utente). Non costruire un HTML con stile proprio.
 
 Apri con una riga di contesto: azienda, testo semantico usato, soglia calibrata, classe dimensionale, anno di riferimento.
 

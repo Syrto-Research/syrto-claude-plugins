@@ -19,7 +19,7 @@ description: >
 This skill finds comparable companies to a target company using Syrto's semantic search, filtered by a user-specified revenue range, then narrows down to the 5 most direct competitors.
 
 ## Suite integration (read first)
-Follow `${CLAUDE_PLUGIN_ROOT}/shared/core.md` (method, context, output, efficiency, handoff) and the capability map (`${CLAUDE_PLUGIN_ROOT}/shared/syrto-reference.md`), which says which tool serves each capability named here. Reuse any upstream `SYRTO-HANDOFF` (the resolved target, its revenue, its descriptions) before calling Syrto.
+Follow `{{ROOT}}/shared/core.md` (method, context, output, efficiency, handoff) and the capability map (`{{ROOT}}/shared/syrto-reference.md`), which says which tool serves each capability named here. Reuse any upstream `SYRTO-HANDOFF` (the resolved target, its revenue, its descriptions) before calling Syrto.
 
 When `company-analysis` runs this skill (livello 3-4), the top 5 go into that report: skip the Excel question in Step 7, and ask the revenue range in the same message as the livello question if it was not given.
 

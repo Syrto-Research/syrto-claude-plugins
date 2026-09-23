@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - name: Test the build script
+        run: bun test scripts
+      - name: Generated Claude plugin matches content/
+        run: bun scripts/build.ts --platform claude --check
+      - name: ChatGPT copy builds
+        run: bun scripts/build.ts --platform openai --out "$RUNNER_TEMP/openai"
+      - name: Validate the marketplace and the plugin
+        run: |
+          bun add -g @anthropic-ai/claude-code
+          claude plugin validate .
+          claude plugin validate plugins/syrto-ai-claude --strict

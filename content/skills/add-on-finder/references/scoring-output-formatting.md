@@ -35,7 +35,7 @@ Rendering of the readable report (canone, offerta del PDF, digest in chat) is ha
 
 **Tab "Riepilogo"**: starting company(ies), search parameters (query, soglia di pertinenza, banda dimensione, geo, soglia età, proprietà, anno, base di bilancio), counts per list, the Add-on Score weighting used, and one line noting that companies with no data on ownership type or owner age were not included by the discovery filters.
 
-**2) Report leggibile (italiano) — sempre prodotto insieme all'Excel.** Il report leggibile è reso come deliverable formalizzato secondo `${CLAUDE_PLUGIN_ROOT}/shared/core.md` (canone dalle preferenze, core §3, HTML con offerta del PDF, digest in chat) — mantieni gli stessi contenuti/colonne (intro con azienda/e di partenza e parametri, tabella dei target ordinata per Add-on Score con le righe top-tier evidenziate, razionale strategico per i top target) e le sezioni "Da valutare con cautela" / "Da verificare". È la versione pensata per essere letta/condivisa, mentre l'Excel resta il file dati di lavoro.
+**2) Report leggibile (italiano) — sempre prodotto insieme all'Excel.** Il report leggibile è reso come deliverable formalizzato secondo `{{ROOT}}/shared/core.md` (canone dalle preferenze, core §3, HTML con offerta del PDF, digest in chat) — mantieni gli stessi contenuti/colonne (intro con azienda/e di partenza e parametri, tabella dei target ordinata per Add-on Score con le righe top-tier evidenziate, razionale strategico per i top target) e le sezioni "Da valutare con cautela" / "Da verificare". È la versione pensata per essere letta/condivisa, mentre l'Excel resta il file dati di lavoro.
 
 ## Formatting (Excel & chat)
 
@@ -43,7 +43,7 @@ Numbers (amounts, percentages, ratios) follow the house style in `core.md` §5. 
 
 ## Ownership labels
 
-Show ownership type in plain Italian using the ownership-type labels in the capability map (`${CLAUDE_PLUGIN_ROOT}/shared/syrto-reference.md`), never the raw code. Unknown or missing: "N/D".
+Show ownership type in plain Italian using the ownership-type labels in the capability map (`{{ROOT}}/shared/syrto-reference.md`), never the raw code. Unknown or missing: "N/D".
 
 ## Efficiency & robustness checklist
 
