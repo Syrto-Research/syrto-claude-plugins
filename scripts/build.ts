@@ -2,14 +2,14 @@
 /**
  * Build a platform's copy of the Syrto AI plugin from the canonical `content/` tree.
  *
- *   bun scripts/build.ts --platform claude            # writes plugins/syrto-ai-claude
+ *   bun scripts/build.ts --platform claude            # writes plugins/syrto-ai
  *   bun scripts/build.ts --platform openai --out DIR  # writes DIR/shared and DIR/skills
  *   add --check to compare instead of writing (exit 1 on any difference)
  *
  * Sources, in order of precedence:
  *   platforms/<p>/overrides/**  a whole file that differs per platform (replaces content/)
  *   content/**                  everything else, shared by every platform
- *   platforms/<p>/plugin/**     manifests, hooks, README: copied to the output root as is
+ *   platforms/<p>/plugin/**     manifests, icon, README: copied to the output root as is
  *
  * Markdown in content/ and overrides/ may use:
  *   {{ROOT}}                    the plugin root, as the platform can resolve it
@@ -159,7 +159,7 @@ function main(): number {
     console.error(`usage: bun scripts/build.ts --platform ${PLATFORMS.join("|")} [--out DIR] [--check]`);
     return 2;
   }
-  const out = resolve(opt("--out") ?? (platform === "claude" ? join(REPO, "plugins/syrto-ai-claude") : ""));
+  const out = resolve(opt("--out") ?? (platform === "claude" ? join(REPO, "plugins/syrto-ai") : ""));
   if (!opt("--out") && platform !== "claude") {
     console.error("--out is required for this platform");
     return 2;

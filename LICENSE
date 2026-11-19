@@ -12,6 +12,6 @@ PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL SYRTO S.R.L. BE LIABLE
 ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR ITS USE.
 
-The fund reference data in plugins/syrto-ai-claude/skills/buyer-list/references/ is
+The fund reference data in plugins/syrto-ai/skills/buyer-list/references/ is
 derived from the AIFI (Associazione Italiana del Private Equity, Venture Capital e
 Private Debt) member directory and remains subject to AIFI's terms.

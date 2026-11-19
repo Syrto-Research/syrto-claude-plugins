@@ -7,7 +7,7 @@ description: >-
   diretta (/briefing-now); le richieste in linguaggio naturale ("briefing di oggi", "prepara
   le call") vanno alla skill `briefing`.
 disable-model-invocation: true
-argument-hint: [data opzionale, es. "domani" o "2025-03-15", o un nome azienda]
+argument-hint: "[data opzionale, es. \"domani\" o \"2025-03-15\", o un nome azienda]"
 <!-- /only -->
 <!-- only:openai -->
   oppure per una singola azienda nominata, seguendo la skill `briefing`. Usala solo quando

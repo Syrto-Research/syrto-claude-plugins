@@ -6,7 +6,7 @@ description: >-
   giornaliero", "schedula il briefing", "sposta l'orario del briefing", "set up my daily
   briefing". Non per preparare un briefing adesso (usa briefing).
 disable-model-invocation: true
-argument-hint: [orario opzionale, es. "07:00" o "21:00"]
+argument-hint: "[orario opzionale, es. \"07:00\" o \"21:00\"]"
 ---
 
 # Setup Daily Briefing
