@@ -6,7 +6,9 @@
     "name": "Syrto"
   },
   "homepage": "https://syrto.ai",
+  "documentationUrl": "https://docs.syrto.ai/mcp/claude",
   "privacyPolicyUrl": "https://www.syrto.ai/syrto-ai-connector-privacy-policy",
+  "termsOfServiceUrl": "https://www.syrto.ai/terms",
   "repository": "https://github.com/Syrto-Research/syrto-claude-plugins",
   "license": "LicenseRef-Syrto-Proprietary",
   "keywords": [
