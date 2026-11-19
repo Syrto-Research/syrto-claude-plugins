@@ -9,8 +9,8 @@
   },
   "plugins": [
     {
-      "name": "syrto-ai-claude",
-      "source": "./plugins/syrto-ai-claude",
+      "name": "syrto-ai",
+      "source": "./plugins/syrto-ai",
       "description": "Financial-intelligence assistant for Italian companies, built on Syrto: Sales & Marketing, M&A & Strategy, and Reporting skills over the Syrto MCP server.",
       "category": "finance",
       "homepage": "https://syrto.ai"

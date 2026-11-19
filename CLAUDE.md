@@ -3,9 +3,9 @@
 Single source for the Syrto AI skills. `AGENTS.md` is a symlink to this file.
 
 - Edit `content/`, `platforms/<platform>/overrides/` or `platforms/claude/plugin/`, never
-  `plugins/syrto-ai-claude/` directly: it is generated, and CI fails when it drifts. Rebuild with
+  `plugins/syrto-ai/` directly: it is generated, and CI fails when it drifts. Rebuild with
   `bun scripts/build.ts --platform claude`, then run `bun test scripts` and
-  `claude plugin validate plugins/syrto-ai-claude --strict`.
+  `claude plugin validate plugins/syrto-ai --strict`.
 - Skills name Syrto capabilities ("resolve the company", "the financial analysis"). Tool names and
   metric slugs live only in `content/shared/syrto-reference.md`; the build enforces the tool half.
 - Keep platform differences inside `<!-- only:<platform> -->` blocks, or in an override when the
